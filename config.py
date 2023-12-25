@@ -8,11 +8,16 @@ import re
 def select_config(prefix: str) -> (str, dict):
 	"""Select a JSON config file based on a search prefix"""
 	# Search for config files starting with prefix
-	_config_dir = './config'
+	config_dir = './config'
 	config_files: list(str) = []
-	for file in os.listdir(_config_dir):
+	for file in os.listdir(config_dir):
 		if file.startswith(prefix) and file.endswith('.json'):
 			config_files.append(file)
+	# Don't prompt for selection if a single config file is found
+	if len(config_files) == 1:
+		config_name = ''.join(config_files[0].split('.')[:-1])
+		with open(f'{config_dir}/{config_name}.json') as f:
+			return (config_name, json.load(f))
 
 	print('Select config file:')
 	for i, config in enumerate(config_files):
@@ -25,17 +30,17 @@ def select_config(prefix: str) -> (str, dict):
 		raise ValueError('Invalid config selection')
 	else:
 		config_name = ''.join(config_files[choice-1].split('.')[:-1])
-			return (config_name, json.load(open(f'{_config_dir}/{config_name}.json')))
+		with open(f'{config_dir}/{config_name}.json') as f:
+			return (config_name, json.load(f))
 
 
 def load_schema(name: str) -> dict:
 	with open(f'config_examples/{name}.jsonc') as f:
 		lines: list(str) = f.readlines()
-				for i, line in enumerate(lines):
-					if line.lstrip().startswith('//'):
-						lines.pop(i)
-				return json.loads(''.join(lines))
-
+		for i, line in enumerate(lines):
+			if line.lstrip().startswith('//'):
+				lines.pop(i)
+		return json.loads(''.join(lines))
 
 def validate_config(config: dict, schema: dict):
 	for k, v in schema.items():
