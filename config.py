@@ -37,9 +37,7 @@ def select_config(prefix: str) -> (str, dict):
 def load_schema(name: str) -> dict:
 	with open(f'config_examples/{name}.jsonc') as f:
 		lines: list(str) = f.readlines()
-		for i, line in enumerate(lines):
-			if line.lstrip().startswith('//'):
-				lines.pop(i)
+		lines = filter(lambda line: not line.lstrip().startswith('//'), lines)
 		return json.loads(''.join(lines))
 
 def validate_config(config: dict, schema: dict):
