@@ -1,6 +1,6 @@
 # py-scripts-util
 
-Common utility functions for NightCrypt Python scripts.
+Utility functions for Python scripting. Not intended for general use, but may be found generally useful.
 
 ## Used In
 - [NightCrypt/deploy-scripts](https://git.nightcrypt.com/nightcrypt/deploy-scripts)
