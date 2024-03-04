@@ -1,6 +1,6 @@
 import subprocess
 
-_rsync_flags = ['-h', '--size-only', '--info=progress2']
+_rsync_flags = ['-h', '--info=progress2']
 
 
 class Rsync:
@@ -18,5 +18,5 @@ class Rsync:
 	def __call__(self, src: str, dst: str, *args) -> subprocess.CompletedProcess:
 		rsync = 'rsync'
 		ssh_args = ['-e', f'ssh -p {self.port}'] if self.port else []
-		transfer_args = [f'{self.login}:{src}', dst] if self.reverse else [src, f'{self.login}:dst']
+		transfer_args = [f'{self.login}:{src}', dst] if self.reverse else [src, f'{self.login}:{dst}']
 		return subprocess.run([rsync] + _rsync_flags + ssh_args + [arg for arg in args] + transfer_args)
