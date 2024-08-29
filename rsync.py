@@ -17,7 +17,7 @@ class Rsync:
 		login_split = login.split(':', 2)
 		self.login = login_split[0]
 		self.port = login_split[1] if len(login_split) == 2 else None
-		self.reserve = reserve
+		self.reverse = reverse
 
 	def __call__(self, src: str, dst: str, *args) -> subprocess.CompletedProcess:
 		rsync = 'rsync'
